@@ -1,28 +1,29 @@
+name: Run Python Script
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:  # allows manual trigger from GitHub UI
+
 jobs:
-  run-notebook:
+  run-script:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.10'
+      - name: 🐍 Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'  # change if needed
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+      - name: 📦 Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-    # >>> Add this step <<<
-    - name: Install Jupyter kernel
-      run: |
-        pip install ipykernel
-        python -m ipykernel install --user --name=python3
-
-    - name: Execute Jupyter Notebook
-      run: |
-        pip install nbconvert
-        jupyter nbconvert --to notebook --execute code.ipynb --output executed_notebook.ipynb
+      - name: ▶️ Run code.py
+        run: python code.py
